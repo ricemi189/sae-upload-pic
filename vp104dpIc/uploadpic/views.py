@@ -22,7 +22,10 @@ def home(request):
         domain_name = 'pics'
         s = sae.storage.Client()
         pic = request.FILES['pic']
+        pics = ['png', 'jpg', 'jpeg', 'bmp', 'gif']
         pic_suffix = pic.name.split('.')[-1]
+        if pic_suffix.lower() not in pics:
+            return render_to_response('home.html', {'pic_url': 'not a pic'})
         pic_name = str(time.time()) + '.' + pic_suffix
         ob = sae.storage.Object(pic.read())
         url = s.put(domain_name, pic_name, ob)
